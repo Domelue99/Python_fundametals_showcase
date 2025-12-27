@@ -1,14 +1,19 @@
 import os
-
+from pathlib import Path
 #TASK_FILE = "tasks.txt"
 MAIN_DIRECTORY = "Database/"
 
 def load_directory():
     if not os.path.isdir(MAIN_DIRECTORY):
         return[]
-    from pathlib import Path
+    
+    directories = []
+    
     for file in Path (MAIN_DIRECTORY).iterdir():
-        return[file.stem]
+        if file.is_file() and file.suffix == ".txt":
+            directories.append(file.stem)
+        
+    return directories
 
 def load_task(directory_name):
     if not os.path.exists(directory_name):
@@ -61,6 +66,7 @@ def show_directory(directories: list[str])-> None :
     if not directories:
         print("\nKeine Ordner gefunden")
     else:
+        directories.sort()
         print("\nAktuelle Ordner:")
         for i, directory in enumerate(directories,1):
             print(f"{i}. {directory}")
@@ -68,6 +74,9 @@ def show_directory(directories: list[str])-> None :
         number = int(input("Ordner auswählen: ") ) -1 
         
         show_menu_tasks(list(directories), int(number))
+
+def sort_directories(directories: list[str])->None:
+    directories.sort()
 
 def add_directory(directories):
     
@@ -79,6 +88,10 @@ def add_directory(directories):
             if new_directory == directory:
                 print("Name bereits vergegben!")
                 check = True
+            
+            if len(directories) >= 10 :
+                print("Zu viele Ordner, bitte Ordner löschen um neuen Ordner zu erstellen!")
+                break
 
         if not check:
             directories.append(new_directory)
