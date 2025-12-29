@@ -1,0 +1,3 @@
+# Ignore System-generated files
+.DS_Store
+Thumbs.db
